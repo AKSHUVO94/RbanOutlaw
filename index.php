@@ -5,60 +5,71 @@ include('header.php');
 $slides = [
     [
         "title" => "Modern Men's Streetwear",
-        "subtitle" => "Premium structures built around raw comfort and perfect masculine draping.",
-        "img" => "https://static.vecteezy.com/system/resources/thumbnails/071/426/575/small/young-man-in-stylish-streetwear-poses-in-urban-alley-during-a-cool-afternoon-photo.jpg",
+        "subtitle" => "Premium structures built around raw comfort.",
+        "img" => "https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1200&q=80",
         "link_text" => "Explore Denim"
     ],
     [
         "title" => "Feel Good, Look Bold",
         "subtitle" => "Heavyweight fabrics engineered to elevate your daily routine.",
-        "img" => "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQoG57LmzHjgoTtpbeTWuz9tnmILMTNb6IBfMKBJnBRZvETID2uh6zCOdZODlxDJ_6akmZ2IeXxjGBU-os",
+        "img" => "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1200&q=80",
         "link_text" => "View Outerwear"
     ]
 ];
 
-// Expanded Curated Premium Men's Inventory
+// Expanded Inventory — 6 Curated High-End Drops
 $products = [
     [
         "title" => "Outlaw Heavyweight Men's Hoodie",
-        "price" => 110.00,
+        "price" => 3500,
+        "usd" => "110.00",
+        "cat" => "top",
         "desc" => "450GSM drop-shoulder loopback luxury terry cotton.",
         "img" => "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80"
     ],
     [
         "title" => "Feel Good Men's Flight Jacket",
-        "price" => 185.00,
+        "price" => 5800,
+        "usd" => "185.00",
+        "cat" => "new",
         "desc" => "Water-resistant matte finish shell with utility zippers.",
         "img" => "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80"
     ],
     [
         "title" => "Rban Premium Men's Cargo Denim",
-        "price" => 140.00,
+        "price" => 4200,
+        "usd" => "140.00",
+        "cat" => "bottom",
         "desc" => "Relaxed taper fit, Japanese raw selvedge edge design.",
         "img" => "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80"
     ],
     [
         "title" => "Outlaw Technical Men's Overcoat",
-        "price" => 220.00,
-        "desc" => "Windbreaker shielding layer with subtle modular tactical storage straps.",
+        "price" => 7500,
+        "usd" => "220.00",
+        "cat" => "top",
+        "desc" => "Windbreaker shielding layer with tactical storage straps.",
         "img" => "https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=600&q=80"
     ],
     [
         "title" => "Feel Good Box-Fit Heavy Tee",
-        "price" => 55.00,
-        "desc" => "Combed compact luxury yarn knit tee with side split split-seam hems.",
+        "price" => 1800,
+        "usd" => "55.00",
+        "cat" => "new",
+        "desc" => "Combed compact luxury yarn knit tee with split-seam hems.",
         "img" => "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80"
     ],
     [
         "title" => "Rban Distressed Ribbed Beanie",
-        "price" => 40.00,
-        "desc" => "Four-stitch structuring made with premium merino wool blend insulation.",
+        "price" => 1200,
+        "usd" => "40.00",
+        "cat" => "new",
+        "desc" => "Four-stitch structuring made with premium merino wool.",
         "img" => "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=600&q=80"
     ]
 ];
 ?>
 
-<!-- ================= SLIDER SPECIFIC STYLES ================= -->
 <style>
     .slider-viewport {
         width: 100%;
@@ -70,7 +81,7 @@ $products = [
         width: 100%;
         height: 100%;
         display: flex;
-        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: transform 0.6s ease-in-out;
     }
     .slide {
         min-width: 100%;
@@ -85,78 +96,244 @@ $products = [
     .slide::before {
         content: '';
         position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(90deg, rgba(13,13,13,0.9) 0%, rgba(13,13,13,0.4) 100%);
+        top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.6);
     }
     .slide-content { position: relative; z-index: 2; max-width: 650px; }
-    .slide-title { font-size: 3.8rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 1rem; line-height: 1.05; }
-    .slide-subtitle { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 2.5rem; }
+    .slide-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; color: #fff; }
+    .slide-subtitle { color: #ccc; font-size: 1.1rem; margin-bottom: 2rem; }
+    
     .slider-nav { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 10; }
-    .slider-dot { width: 24px; height: 2px; background: rgba(255, 255, 255, 0.2); cursor: pointer; transition: background 0.3s; }
-    .slider-dot.active { background: var(--accent); }
+    .slider-dot { width: 24px; height: 3px; background: rgba(255, 255, 255, 0.3); cursor: pointer; }
+    .slider-dot.active { background: #fff; }
+
+    /* FIXED STICKY AUTO-HIDE NAV HEADER BAR */
+    header, .header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        z-index: 9999 !important;
+        transition: transform 0.3s ease, opacity 0.3s ease !important;
+    }
+    .header-hidden {
+        transform: translateY(-100%) !important;
+        opacity: 0 !important;
+    }
+
+    /* FILTER SELECTION MENU STYLING */
+    .filter-menu {
+        display: flex;
+        gap: 1.5rem;
+        margin: 2rem 0;
+        border-bottom: 1px solid #333;
+        padding-bottom: 0.75rem;
+    }
+    .filter-btn {
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        transition: color 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+        color: #fff;
+    }
+    
+    /* Clean grid layout configuration fallback */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .card { 
+        display: flex;
+        flex-direction: column;
+        background: #111;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: opacity 0.3s ease, transform 0.3s ease; 
+    }
 </style>
 
-<!-- ================= AUTOMATED UPPER SECTION ================= -->
 <section class="slider-viewport">
     <div class="slider-wrapper" id="sliderWrapper">
         <?php foreach ($slides as $slide): ?>
             <div class="slide" style="background-image: url('<?php echo $slide['img']; ?>');">
                 <div class="slide-content">
-                    <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 0.75rem; font-weight: 600;">Exclusively for Men</p>
                     <h2 class="slide-title"><?php echo $slide['title']; ?></h2>
                     <p class="slide-subtitle"><?php echo $slide['subtitle']; ?></p>
-                    <a href="#catalog" class="btn-primary" style="display: inline-block; width: auto; padding: 1.2rem 2.5rem; text-decoration: none;">
+                    <a href="#catalog" class="btn-primary" style="padding: 1rem 2rem; text-decoration: none; display: inline-block;">
                         <?php echo $slide['link_text']; ?>
                     </a>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
-    <div class="slider-nav" id="sliderNav">
+    <div class="slider-nav">
         <?php foreach ($slides as $index => $slide): ?>
             <div class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>" onclick="goToSlide(<?php echo $index; ?>)"></div>
         <?php endforeach; ?>
     </div>
 </section>
 
-<!-- ================= PRODUCT CATALOG SECTION ================= -->
-<main class="container" id="catalog">
-    <div style="margin-bottom: 3rem; margin-top: 1rem;">
-        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 0.5rem;">Men's Premium Essentials</p>
-        <h1 style="font-size: 2.5rem; font-weight: 800;">Curated Drop 01</h1>
+<main class="container" id="catalog" style="margin-top: 3rem;">
+    <div>
+        <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem;">Curated Drops</h1>
     </div>
 
-    <!-- This grid handles multiple items smoothly via the CSS definitions created in your main file -->
-    <div class="grid">
+    <div class="filter-menu">
+        <button class="filter-btn active" onclick="applyFilter('all', this)">All Outfits</button>
+        <button class="filter-btn" onclick="applyFilter('new', this)">New Arrival</button>
+        <button class="filter-btn" onclick="applyFilter('top', this)">Top</button>
+        <button class="filter-btn" onclick="applyFilter('bottom', this)">Bottom</button>
+    </div>
+
+    <div class="grid" id="productGrid">
         <?php foreach ($products as $item): ?>
-            <div class="card">
-                <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['title']; ?>" class="card-img">
-                <div class="card-body">
-                    <h3 style="margin-bottom: 0.25rem; font-size: 1.2rem;"><?php echo $item['title']; ?></h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;"><?php echo $item['desc']; ?></p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="price">$<?php echo number_format($item['price'], 2); ?></span>
-                        <button class="btn-primary" style="width: auto; padding: 0.6rem 1.5rem; font-size: 0.8rem;">Add To Cart</button>
+            <div class="card" data-cat="<?php echo $item['cat']; ?>">
+                
+                <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #1a1a1a;">
+                    <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['title']; ?>" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    
+                    <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: rgba(255, 255, 255, 0.7); padding: 4px 10px; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-radius: 2px; pointer-events: none; user-select: none; z-index: 2;">
+                        © BRAND NAME
                     </div>
                 </div>
+
+                <div class="card-body" style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; font-weight: 700; min-height: 2.8rem; line-height: 1.3;"><?php echo $item['title']; ?></h3>
+                    <p style="color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.45; flex-grow: 1;"><?php echo $item['desc']; ?></p>
+                    
+                    <div style="margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px;">
+                        <span style="color: #666; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Size:</span>
+                        <select class="product-size" style="background: #222; color: #fff; border: 1px solid #444; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; cursor: pointer; outline: none; flex-grow: 1;">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; background: rgba(255,255,255,0.02); padding: 0.75rem; border-radius: 6px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span class="price" style="font-size: 1.25rem; font-weight: 700; color: #f4c430;">৳<?php echo number_format($item['price'], 0); ?></span>
+                            <span style="color: #666; font-size: 0.8rem; margin-top: 1px;">$<?php echo $item['usd']; ?> USD</span>
+                        </div>
+                        <button class="btn-primary" onclick="saveToCart('<?php echo addslashes($item['title']); ?>', <?php echo $item['price']; ?>, '<?php echo $item['img']; ?>', this)" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; width: auto; font-weight: 700; white-space: nowrap;">
+                            Add To Cart
+                        </button>
+                    </div>
+                </div>
+
             </div>
         <?php endforeach; ?>
     </div>
 </main>
 
 <script>
-    let currentSlide = 0;
-    const totalSlides = <?php echo count($slides); ?>;
-    const wrapper = document.getElementById('sliderWrapper');
-    const dots = document.querySelectorAll('.slider-dot');
-    let autoCycle = setInterval(nextSlide, 4000);
+    // Safe Filter Engine Configuration
+    function applyFilter(category, button) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        document.querySelectorAll('#productGrid .card').forEach(card => {
+            const cardCat = card.getAttribute('data-cat');
+            if (category === 'all' || cardCat === category) {
+                card.style.setProperty('display', 'flex', 'important'); 
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                }, 10);
+            } else {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => { card.style.setProperty('display', 'none', 'important'); }, 300);
+            }
+        });
+    }
+
+    // Smart Navigation Bar Scroll Tracker
+    let lastScroll = window.scrollY;
+    const mainHeader = document.querySelector('header') || document.querySelector('.header');
+
+    if (mainHeader) {
+        window.addEventListener('scroll', () => {
+            let currentScroll = window.scrollY;
+            if (currentScroll > lastScroll && currentScroll > 80) {
+                mainHeader.classList.add('header-hidden');
+            } else {
+                mainHeader.classList.remove('header-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+    }
+
+    // Lookbook Slideshow Carousel Config
+    let activeSlide = 0;
+    const slideCount = <?php echo count($slides); ?>;
+    const sliderWrap = document.getElementById('sliderWrapper');
+    const allDots = document.querySelectorAll('.slider-dot');
 
     function updateSlider() {
-        wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-        dots.forEach((dot, idx) => { dot.classList.toggle('active', idx === currentSlide); });
+        if(sliderWrap) {
+            sliderWrap.style.transform = `translateX(-${activeSlide * 100}%)`;
+            allDots.forEach((dot, idx) => dot.classList.toggle('active', idx === activeSlide));
+        }
     }
-    function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; updateSlider(); }
-    function goToSlide(index) { clearInterval(autoCycle); currentSlide = index; updateSlider(); autoCycle = setInterval(nextSlide, 4000); }
+    function goToSlide(index) {
+        activeSlide = index;
+        updateSlider();
+    }
+    setInterval(() => {
+        activeSlide = (activeSlide + 1) % slideCount;
+        updateSlider();
+    }, 5000);
+
+    // Dynamic Browser Storage Cart Engine
+    function saveToCart(title, price, img, button) {
+        const cardBody = button.closest('.card-body');
+        const selectedSize = cardBody.querySelector('.product-size').value;
+
+        let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+        const existingProduct = cart.find(item => item.title === title && item.size === selectedSize);
+
+        if (existingProduct) {
+            existingProduct.qty += 1;
+        } else {
+            cart.push({
+                title: title,
+                price: price,
+                img: img,
+                size: selectedSize,
+                qty: 1
+            });
+        }
+
+        localStorage.setItem('streetwearCart', JSON.stringify(cart));
+        updateCartCount();
+
+        button.innerHTML = "Added ✓";
+        button.style.pointerEvents = "none";
+        setTimeout(() => {
+            button.innerHTML = "Add To Cart";
+            button.style.pointerEvents = "auto";
+        }, 1200);
+    }
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+        let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalDisplay = document.getElementById('header-cart');
+        if (totalDisplay) { totalDisplay.innerText = `Cart (${totalItems})`; }
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCartCount);
 </script>
 
 <?php include('footer.php'); ?>

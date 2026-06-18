@@ -30,6 +30,20 @@ header {
     z-index: 100;
 }
 
+
+/* AUTO-HIDE MENU BAR CLASSES */
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: transform 0.3s ease, opacity 0.3s ease !important;
+    }
+    .header-hidden {
+        transform: translateY(-20px);
+        opacity: 0;
+        pointer-events: none; /* Prevents clicking invisible links */
+    }
+    
 .logo { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; }
 .logo span { color: var(--accent); }
 
