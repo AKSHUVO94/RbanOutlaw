@@ -1,621 +1,480 @@
-
 <?php
-
 include('header.php');
-
 include('db.php'); // Establishes your live database bridge connection
 
-
-
 // High-End Men's Urban Lookbook Imagery
-
 $slides = [
-
-[
-
-"title" => "Modern Men's Streetwear",
-
-"subtitle" => "Premium structures built around raw comfort.",
-
-"img" => "https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1200&q=80",
-
-"link_text" => "Explore Denim"
-
-],
-
-[
-
-"title" => "Feel Good, Look Bold",
-
-"subtitle" => "Heavyweight fabrics engineered to elevate your daily routine.",
-
-"img" => "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1200&q=80",
-
-"link_text" => "View Outerwear"
-
-]
-
+    [
+        "title" => "Modern Men's Streetwear",
+        "subtitle" => "Premium structures built around raw comfort.",
+        "img" => "https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&w=1200&q=80",
+        "link_text" => "Explore Denim"
+    ],
+    [
+        "title" => "Feel Good, Look Bold",
+        "subtitle" => "Heavyweight fabrics engineered to elevate your daily routine.",
+        "img" => "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1200&q=80",
+        "link_text" => "View Outerwear"
+    ]
 ];
 
-
-
 // FETCH PRODUCTS FROM DYNAMIC DATABASE ENGINE
-
-// Automatically discards 'inactive' elements straight from the SQL query statement layer
-
 $product_query = $conn->query("SELECT * FROM products WHERE status = 'active' ORDER BY id DESC");
-
 $products = [];
 
-
-
 if ($product_query && $product_query->num_rows > 0) {
-
-while($row = $product_query->fetch_assoc()) {
-
-$products[] = $row;
-
+    while($row = $product_query->fetch_assoc()) {
+        $products[] = $row;
+    }
 }
-
-}
-
 ?>
 
-
-
 <style>
-
 .slider-viewport {
-
-width: 100%;
-
-height: 75vh;
-
-position: relative;
-
-overflow: hidden;
-
+    width: 100%;
+    height: 75vh;
+    position: relative;
+    overflow: hidden;
 }
-
 .slider-wrapper {
-
-width: 100%;
-
-height: 100%;
-
-display: flex;
-
-transition: transform 0.6s ease-in-out;
-
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 0.6s ease-in-out;
 }
-
 .slide {
-
-min-width: 100%;
-
-height: 100%;
-
-position: relative;
-
-background-size: cover;
-
-background-position: center;
-
-display: flex;
-
-align-items: center;
-
-padding: 4rem 6rem;
-
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding: 4rem 6rem;
 }
-
 .slide::before {
-
-content: '';
-
-position: absolute;
-
-top:0; left:0; width:100%; height:100%;
-
-background: rgba(0,0,0,0.6);
-
+    content: '';
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6);
 }
-
 .slide-content { position: relative; z-index: 2; max-width: 650px; }
-
 .slide-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; color: #fff; }
-
 .slide-subtitle { color: #ccc; font-size: 1.1rem; margin-bottom: 2rem; }
 
-
 .slider-nav { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 10; }
-
 .slider-dot { width: 24px; height: 3px; background: rgba(255, 255, 255, 0.3); cursor: pointer; }
-
 .slider-dot.active { background: #fff; }
 
-
-
 /* FIXED STICKY AUTO-HIDE NAV HEADER BAR */
-
 header, .header {
-
-position: fixed !important;
-
-top: 0 !important;
-
-left: 0 !important;
-
-width: 100% !important;
-
-z-index: 9999 !important;
-
-transition: transform 0.3s ease, opacity 0.3s ease !important;
-
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+    transition: transform 0.3s ease, opacity 0.3s ease !important;
 }
-
 .header-hidden {
-
-transform: translateY(-100%) !important;
-
-opacity: 0 !important;
-
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
 }
-
-
 
 /* FILTER SELECTION MENU STYLING */
-
 .filter-menu {
-
-display: flex;
-
-gap: 1.5rem;
-
-margin: 2rem 0;
-
-border-bottom: 1px solid #333;
-
-padding-bottom: 0.75rem;
-
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.75rem;
 }
-
 .filter-btn {
-
-background: none;
-
-border: none;
-
-color: #888;
-
-font-size: 0.9rem;
-
-font-weight: 700;
-
-text-transform: uppercase;
-
-cursor: pointer;
-
-padding: 0.25rem 0.5rem;
-
-transition: color 0.2s;
-
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s;
 }
-
 .filter-btn.active, .filter-btn:hover {
-
-color: #fff;
-
+    color: #fff;
 }
-
 
 /* Clean grid layout configuration fallback */
-
 .grid {
-
-display: grid;
-
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-gap: 2rem;
-
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
-
-
 
 .card {
-
-display: flex;
-
-flex-direction: column;
-
-background: #111;
-
-border-radius: 8px;
-
-overflow: hidden;
-
-transition: opacity 0.3s ease, transform 0.3s ease;
-
+    display: flex;
+    flex-direction: column;
+    background: #111;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+/* ================= PREMIUM SHOPPING CART DRAWER ================= */
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: none;
+}
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -450px;
+    width: 100%;
+    max-width: 440px;
+    height: 100vh;
+    background: #0d0d0d;
+    border-left: 1px solid #222;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    z-index: 10001;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+}
+.cart-drawer.open {
+    right: 0;
+}
+.cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cart-header h3 { margin: 0; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; }
+.cart-close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+.cart-close-btn:hover { color: #f4c430; }
+
+.cart-items-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+.cart-item {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid #1a1a1a;
+    align-items: center;
+}
+.cart-item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; background: #222; border: 1px solid #222; }
+.cart-item-details { flex-grow: 1; }
+.cart-item-title { font-size: 0.95rem; color: #fff; margin: 0 0 4px 0; font-weight: 600; }
+.cart-item-meta { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.cart-item-price { color: #f4c430; font-weight: 700; font-size: 0.95rem; }
+
+.cart-qty-control { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.qty-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem; border-radius: 3px; }
+.qty-btn:hover { border-color: #f4c430; color: #f4c430; }
+.qty-val { font-size: 0.85rem; min-width: 16px; text-align: center; font-weight: 600; }
+
+.cart-item-remove { background: none; border: none; color: #da3636; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; padding: 0; margin-top: 4px; display: inline-block; }
+.cart-item-remove:hover { text-decoration: underline; }
+
+.cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #222;
+    background: #111;
+}
+.cart-summary-row { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; margin-bottom: 1.5rem; }
+.cart-empty-msg { text-align: center; color: #555; margin-top: 4rem; font-size: 0.95rem; font-weight: 600; }
 </style>
 
-
+<!-- Slide-out Shopping Cart Framework -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button class="cart-close-btn" onclick="closeCart()">&times;</button>
+    </div>
+    <div class="cart-items-container" id="cartItemsList">
+        <!-- Rendered dynamically by Javascript Engine -->
+    </div>
+    <div class="cart-footer">
+        <div class="cart-summary-row">
+            <span>Estimated Total:</span>
+            <span id="cartTotalPrice" style="color: #f4c430;">৳0</span>
+        </div>
+        <button class="btn-primary" style="width: 100%; padding: 1rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;" onclick="alert('Proceeding to dynamic checkout portal sequence...');">Proceed To Checkout</button>
+    </div>
+</div>
 
 <section class="slider-viewport">
-
 <div class="slider-wrapper" id="sliderWrapper">
-
 <?php foreach ($slides as $slide): ?>
-
 <div class="slide" style="background-image: url('<?php echo $slide['img']; ?>');">
-
 <div class="slide-content">
-
 <h2 class="slide-title"><?php echo $slide['title']; ?></h2>
-
 <p class="slide-subtitle"><?php echo $slide['subtitle']; ?></p>
-
 <a href="#catalog" class="btn-primary" style="padding: 1rem 2rem; text-decoration: none; display: inline-block;">
-
 <?php echo $slide['link_text']; ?>
-
 </a>
-
 </div>
-
 </div>
-
 <?php endforeach; ?>
-
 </div>
-
 <div class="slider-nav">
-
 <?php foreach ($slides as $index => $slide): ?>
-
 <div class="slider-dot <?php echo $index === 0 ? 'active' : ''; ?>" onclick="goToSlide(<?php echo $index; ?>)"></div>
-
 <?php endforeach; ?>
-
 </div>
-
 </section>
 
-
-
 <main class="container" id="catalog" style="margin-top: 3rem;">
-
 <div>
-
 <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem;">Curated Drops</h1>
-
 </div>
-
-
 
 <div class="filter-menu">
-
 <button class="filter-btn active" onclick="applyFilter('all', this)">All Outfits</button>
-
 <button class="filter-btn" onclick="applyFilter('new', this)">New Arrival</button>
-
 <button class="filter-btn" onclick="applyFilter('top', this)">Top</button>
-
 <button class="filter-btn" onclick="applyFilter('bottom', this)">Bottom</button>
-
 </div>
 
-
-
 <div class="grid" id="productGrid">
-
 <?php foreach ($products as $item): ?>
-
 <?php $isSoldOut = ($item['stock'] === 'soldout'); ?>
-
 
 <div class="card" data-cat="<?php echo $item['cat']; ?>" style="<?php echo $isSoldOut ? 'opacity: 0.55;' : ''; ?>">
 
-
 <div style="position: relative; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #1a1a1a;">
-
 <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['title']; ?>" style="width: 100%; height: 100%; object-fit: cover; display: block; <?php echo $isSoldOut ? 'filter: grayscale(100%) blur(1px);' : ''; ?>">
 
-
 <?php if ($isSoldOut): ?>
-
 <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 3; pointer-events: none;">
-
 <span style="background: #ff4d4d; color: #fff; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; padding: 6px 14px; border-radius: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">SOLD OUT</span>
-
 </div>
-
 <?php endif; ?>
-
 
 <div style="position: absolute; bottom: 12px; left: 12px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: rgba(255, 255, 255, 0.7); padding: 4px 10px; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-radius: 2px; pointer-events: none; user-select: none; z-index: 2;">
-
 © BRAND NAME
-
 </div>
-
 </div>
-
-
 
 <div class="card-body" style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
-
 <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; font-weight: 700; min-height: 2.8rem; line-height: 1.3;"><?php echo $item['title']; ?></h3>
-
 <p style="color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.45; flex-grow: 1;"><?php echo $item['desc']; ?></p>
 
-
 <div style="margin-bottom: 1.2rem; display: flex; align-items: center; gap: 10px;">
-
 <span style="color: #666; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Size:</span>
-
 <select class="product-size" <?php echo $isSoldOut ? 'disabled' : ''; ?> style="background: #222; color: <?php echo $isSoldOut ? '#555' : '#fff'; ?>; border: 1px solid #444; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; cursor: <?php echo $isSoldOut ? 'not-allowed' : 'pointer'; ?>; outline: none; flex-grow: 1;">
-
 <option value="S">S</option>
-
 <option value="M" selected>M</option>
-
 <option value="L">L</option>
-
 <option value="XL">XL</option>
-
 </select>
-
 </div>
-
-
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; background: rgba(255,255,255,0.02); padding: 0.75rem; border-radius: 6px;">
-
 <div style="display: flex; flex-direction: column;">
-
 <span class="price" style="font-size: 1.25rem; font-weight: 700; color: #f4c430;">৳<?php echo number_format($item['price'], 0); ?></span>
-
 <span style="color: #666; font-size: 0.8rem; margin-top: 1px;">$<?php echo $item['usd']; ?> USD</span>
-
 </div>
-
 
 <?php if ($isSoldOut): ?>
-
 <button class="btn-primary" disabled style="padding: 0.6rem 1.2rem; font-size: 0.8rem; width: auto; font-weight: 700; background: #1c1c1c; color: #555; border-color: #252525; cursor: not-allowed;">
-
 Out Of Stock
-
 </button>
-
 <?php else: ?>
-
 <button class="btn-primary" onclick="saveToCart('<?php echo addslashes($item['title']); ?>', <?php echo $item['price']; ?>, '<?php echo $item['img']; ?>', this)" style="padding: 0.6rem 1.2rem; font-size: 0.8rem; width: auto; font-weight: 700; white-space: nowrap;">
-
 Add To Cart
-
 </button>
-
 <?php endif; ?>
-
+</div>
 </div>
 
 </div>
-
-
-
-</div>
-
 <?php endforeach; ?>
-
 </div>
-
 </main>
 
-
-
 <script>
-
 // Safe Filter Engine Configuration
-
 function applyFilter(category, button) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
 
-document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-
-button.classList.add('active');
-
-
-
-document.querySelectorAll('#productGrid .card').forEach(card => {
-
-const cardCat = card.getAttribute('data-cat');
-
-if (category === 'all' || cardCat === category) {
-
-card.style.setProperty('display', 'flex', 'important');
-
-setTimeout(() => {
-
-card.style.opacity = '1';
-
-card.style.transform = 'scale(1)';
-
-}, 10);
-
-} else {
-
-card.style.opacity = '0';
-
-card.style.transform = 'scale(0.95)';
-
-setTimeout(() => { card.style.setProperty('display', 'none', 'important'); }, 300);
-
+    document.querySelectorAll('#productGrid .card').forEach(card => {
+        const cardCat = card.getAttribute('data-cat');
+        if (category === 'all' || cardCat === category) {
+            card.style.setProperty('display', 'flex', 'important');
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+            }, 10);
+        } else {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => { card.style.setProperty('display', 'none', 'important'); }, 300);
+        }
+    });
 }
-
-});
-
-}
-
-
 
 // Smart Navigation Bar Scroll Tracker
-
 let lastScroll = window.scrollY;
-
 const mainHeader = document.querySelector('header') || document.querySelector('.header');
 
-
-
 if (mainHeader) {
-
-window.addEventListener('scroll', () => {
-
-let currentScroll = window.scrollY;
-
-if (currentScroll > lastScroll && currentScroll > 80) {
-
-mainHeader.classList.add('header-hidden');
-
-} else {
-
-mainHeader.classList.remove('header-hidden');
-
+    window.addEventListener('scroll', () => {
+        let currentScroll = window.scrollY;
+        if (currentScroll > lastScroll && currentScroll > 80) {
+            mainHeader.classList.add('header-hidden');
+        } else {
+            mainHeader.classList.remove('header-hidden');
+        }
+        lastScroll = currentScroll;
+    });
 }
-
-lastScroll = currentScroll;
-
-});
-
-}
-
-
 
 // Lookbook Slideshow Carousel Config
-
 let activeSlide = 0;
-
 const slideCount = <?php echo count($slides); ?>;
-
 const sliderWrap = document.getElementById('sliderWrapper');
-
 const allDots = document.querySelectorAll('.slider-dot');
 
-
-
 function updateSlider() {
-
-if(sliderWrap) {
-
-sliderWrap.style.transform = `translateX(-${activeSlide * 100}%)`;
-
-allDots.forEach((dot, idx) => dot.classList.toggle('active', idx === activeSlide));
-
+    if(sliderWrap) {
+        sliderWrap.style.transform = `translateX(-${activeSlide * 100}%)`;
+        allDots.forEach((dot, idx) => dot.classList.toggle('active', idx === activeSlide));
+    }
 }
-
-}
-
 function goToSlide(index) {
-
-activeSlide = index;
-
-updateSlider();
-
+    activeSlide = index;
+    updateSlider();
 }
-
 setInterval(() => {
-
-activeSlide = (activeSlide + 1) % slideCount;
-
-updateSlider();
-
+    activeSlide = (activeSlide + 1) % slideCount;
+    updateSlider();
 }, 5000);
 
 
+// ================= MODERN CART UI CONTROLLER OPERATIONS =================
+function openCart() {
+    document.getElementById('cartOverlay').style.display = 'block';
+    setTimeout(() => { document.getElementById('cartDrawer').classList.add('open'); }, 10);
+}
 
-// Dynamic Browser Storage Cart Engine
+function closeCart() {
+    document.getElementById('cartDrawer').classList.remove('open');
+    setTimeout(() => { document.getElementById('cartOverlay').style.display = 'none'; }, 400);
+}
 
 function saveToCart(title, price, img, button) {
+    const cardBody = button.closest('.card-body');
+    const selectedSize = cardBody.querySelector('.product-size').value;
 
-const cardBody = button.closest('.card-body');
+    let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+    const existingProduct = cart.find(item => item.title === title && item.size === selectedSize);
 
-const selectedSize = cardBody.querySelector('.product-size').value;
+    if (existingProduct) {
+        existingProduct.qty += 1;
+    } else {
+        cart.push({ title: title, price: price, img: img, size: selectedSize, qty: 1 });
+    }
 
+    localStorage.setItem('streetwearCart', JSON.stringify(cart));
+    renderCartDrawerItems();
+    openCart(); // Smoothly slide open the cart drawer to show customer their added item
+}
 
+function updateQuantity(title, size, change) {
+    let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+    const targetItem = cart.find(item => item.title === title && item.size === size);
+    
+    if(targetItem) {
+        targetItem.qty += change;
+        if(targetItem.qty <= 0) {
+            cart = cart.filter(item => !(item.title === title && item.size === size));
+        }
+    }
+    localStorage.setItem('streetwearCart', JSON.stringify(cart));
+    renderCartDrawerItems();
+}
 
-let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+function removeCartItem(title, size) {
+    let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+    cart = cart.filter(item => !(item.title === title && item.size === size));
+    localStorage.setItem('streetwearCart', JSON.stringify(cart));
+    renderCartDrawerItems();
+}
 
-const existingProduct = cart.find(item => item.title === title && item.size === selectedSize);
+function renderCartDrawerItems() {
+    let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
+    const container = document.getElementById('cartItemsList');
+    const totalDisplay = document.getElementById('cartTotalPrice');
+    
+    let totalItemsCount = 0;
+    let totalPriceSum = 0;
+    
+    if (cart.length === 0) {
+        container.innerHTML = `<div class="cart-empty-msg">Your active shopping bag is currently empty.</div>`;
+    } else {
+        let htmlContent = '';
+        cart.forEach(item => {
+            totalItemsCount += item.qty;
+            totalPriceSum += (item.price * item.qty);
+            
+            htmlContent += `
+                <div class="cart-item">
+                    <img src="${item.img}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <h4 class="cart-item-title">${item.title}</h4>
+                        <div class="cart-item-meta">Size: ${item.size}</div>
+                        <div class="cart-item-price">৳${(item.price * item.qty).toLocaleString()}</div>
+                        
+                        <div class="cart-qty-control">
+                            <button class="qty-btn" onclick="updateQuantity('${escapeJsString(item.title)}', '${item.size}', -1)">-</button>
+                            <span class="qty-val">${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQuantity('${escapeJsString(item.title)}', '${item.size}', 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeCartItem('${escapeJsString(item.title)}', '${item.size}')">Remove</button>
+                </div>
+            `;
+        });
+        container.innerHTML = htmlContent;
+    }
+    
+    totalDisplay.innerText = `৳${totalPriceSum.toLocaleString()}`;
+    
+    // Sync Navbar Header Display Counter
+    const totalDisplayHeader = document.getElementById('header-cart');
+    if (totalDisplayHeader) { totalDisplayHeader.innerText = `Cart (${totalItemsCount})`; }
+}
 
+function escapeJsString(str) {
+    return str.replace(/'/g, "\\'");
+}
 
-
-if (existingProduct) {
-
-existingProduct.qty += 1;
-
-} else {
-
-cart.push({
-
-title: title,
-
-price: price,
-
-img: img,
-
-size: selectedSize,
-
-qty: 1
-
+// Automatically initialize layout matrix arrays on runtime engine trigger
+document.addEventListener("DOMContentLoaded", () => {
+    renderCartDrawerItems();
+    
+    // Attach event listener to navbar header cart element if it exists to allow toggling it open on click
+    const totalDisplayHeader = document.getElementById('header-cart');
+    if(totalDisplayHeader) {
+        totalDisplayHeader.style.cursor = 'pointer';
+        totalDisplayHeader.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCart();
+        });
+    }
 });
-
-}
-
-
-
-localStorage.setItem('streetwearCart', JSON.stringify(cart));
-
-updateCartCount();
-
-
-
-button.innerHTML = "Added ✓";
-
-button.style.pointerEvents = "none";
-
-setTimeout(() => {
-
-button.innerHTML = "Add To Cart";
-
-button.style.pointerEvents = "auto";
-
-}, 1200);
-
-}
-
-
-
-function updateCartCount() {
-
-let cart = JSON.parse(localStorage.getItem('streetwearCart')) || [];
-
-let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-
-const totalDisplay = document.getElementById('header-cart');
-
-if (totalDisplay) { totalDisplay.innerText = `Cart (${totalItems})`; }
-
-}
-
-
-
-document.addEventListener("DOMContentLoaded", updateCartCount);
-
 </script>
-
-
 
 <?php include('footer.php'); ?>
 
